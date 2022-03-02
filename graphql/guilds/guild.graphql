@@ -1,0 +1,53 @@
+#guilds containing different plants
+type Guild {
+	id: ID!
+	name: String
+	description: String
+	location: String
+	soil_structure: String
+	soil_ph: String
+	shade: String
+	plants: [Plant] @hasMany
+}
+
+extend type Query {
+	countGuilds: [Guild!]! @all
+	guilds: [Guild!]! @paginate
+	# Guild by ID
+	guildById(
+		id: ID!
+	): Guild @field(resolver: "GuildsQuery@guildById")
+}
+
+# MUTATION INPUT
+input CreateGuildInput {
+	name: String @rules(apply: ["required", "unique:categories,name"])
+	description: String
+	location: String
+	soil_structure: String
+	soil_ph: String
+	shade: String
+}
+input UpdateGuildInput {
+	id: ID! @rules(apply: ["required"])
+	name: String
+	description: String
+	location: String
+	soil_structure: String
+	soil_ph: String
+	shade: String
+}
+
+# MUTATIONS
+extend type Mutation {
+	createGuild(
+		createGuildInput: CreateGuildInput!
+	): Guild @field(resolver: "GuildsMutation@createGuild")
+
+	updateGuild(
+		updateGuildInput: UpdateGuildInput!
+	): Plant @field(resolver: "GuildsMutation@updateGuild")
+
+	deleteGuild(id: ID! @rules(apply: ["required"])): Guild @delete
+	
+}

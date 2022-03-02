@@ -1,0 +1,74 @@
+type Plant {
+    id: ID!
+    name: String!
+	description: String
+	location: String
+	planting_date: String
+	soil: String
+	specy_slug: String
+	specy: Specy @belongsTo
+	guild: Guild @belongsTo
+	keystone: Boolean
+}
+
+# QUERIES
+extend type Query {
+	# All plants
+	plants: [Plant] @paginate
+	# Plant by ID
+	plantById(
+		id: ID!
+	): Plant @field(resolver: "PlantsQuery@plantById")
+	# Plants by name
+	plantsByName(
+		name: String!
+	): [Plant] @field(resolver: "PlantsQuery@plantsByName")
+	# Plants by guild
+	plantsByGuild(
+		guild_id: Int
+	): [Plant] @field(resolver: "PlantsQuery@plantsByGuild")
+}
+
+# TODO
+# Revise rules for input values
+# MUTATION INPUTS
+input CreatePlantInput {
+	name: String! @rules(apply: ["required"])
+	description: String
+	location: String
+	planting_date: String
+	soil: String
+	specy_id: Int
+	guild_id: Int
+	keystone: Boolean
+}
+input UpdatePlantInput {
+	id: ID! @rules(apply: ["required"])
+	name: String
+	description: String
+	location: String
+	planting_date: String
+	soil: String
+	specy_id: Int
+	guild_id: Int
+	keystone: Boolean
+}
+# MUTATIONS
+extend type Mutation {
+	#Plant C(R)UD operations
+	# CREATE
+    createPlant(
+        createPlantInput: CreatePlantInput!
+    ): Plant @field(resolver: "PlantsMutation@createPlant")
+
+	# UPDATE
+    updatePlant(
+		updatePlantInput: UpdatePlantInput!
+    ): Plant @field(resolver: "PlantsMutation@updatePlant")
+
+	# DELETE
+    deletePlant(
+		id: ID! @rules(apply: ["required"])
+	): Plant @field(resolver: "PlantsMutation@deletePlant")
+
+}

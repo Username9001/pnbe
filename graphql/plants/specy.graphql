@@ -1,0 +1,172 @@
+# EXTENDER TYPES
+
+type Cultivar {
+	latin_name: String
+	cultivar_name: String
+	notes_on_cultivar: String
+	synonyms: String
+	pull_out: Boolean
+	record_checked: Boolean
+}
+
+type Book {
+	id: ID!
+	title: String
+	author: String
+}
+
+
+# FULL SPECY TYPE
+type Specy {
+	id: ID!
+	latin_name: String
+	slug: String
+	author: String
+	botanical_references: String
+	common_english: [String]
+	record_checked: Int
+	gbif_id: Int
+	taxon_class: String
+	taxon_kingdom: String
+	taxon_phylum: String
+	taxon_order: String
+	taxon_family: String
+	taxon_genus: String
+	wiki_img: String
+	well_drained: Boolean
+	acid: Boolean
+	alkaline: Boolean
+	saline: Boolean
+	habit: String
+	deciduous_evergreen: String
+	height: Float
+	width: Float
+	hardyness: Int
+	in_cultivation: Boolean
+	nitrogen_fixer: Boolean
+	wind: String
+	growth_rate: String
+	pollution: String
+	poor_soil: Boolean
+	drought: Boolean
+	wildlife: Boolean
+	flower_type: String
+	self_fertile: String
+	has_cultivars: Boolean
+	cultivars_in_cultivation: Boolean
+	heavy_clay: Boolean
+	pull_out: Boolean
+	frost_tender: String
+	scented: Boolean
+	soil_pref: [String]
+	shade_pref: [String]
+	shade_locations: [String]
+	moisture_pref: [String]
+	ph_pref: [String]
+	garden_locations: [String]
+	garden_layers: [String]
+	pollinators: [String]
+	medicinal_uses: [String]
+	edible_uses: [String]
+	other_uses: [String]
+	cultivars: [Cultivar] @hasMany
+	overall_rating: Int
+	use_rating: Int
+	grow_rating: Int
+	palatable_rating: Int
+	medicinal_rating: Int
+	book_list: [Book] @hasMany
+	regions_britain: [String]
+	regions_europe: [String]
+	regions_mediterranean: [String]
+	regions_w_asia: [String]
+	regions_e_asia: [String]
+	regions_n_america: [String]
+	regions_s_america: [String]
+	regions_africa: [String]
+	regions_australasia: [String]
+	regions_other: [String]
+	plants: [Plant] @hasMany
+	# Descriptions
+	medicinal: String
+	region: String
+	habitat: String
+	hazards: String
+	synonyms: String
+	propagation: String
+	cultivation_details: String
+	edible_uses: String
+	uses_notes: String
+	site_specific_notes: String
+}
+
+# TODO: Adjust according to MongoDB
+# Currently only @all working
+extend type Query {
+	# All species
+	species: [Specy] @paginate(defaultCount: 36, builder: "App\\GraphQL\\Queries\\SpeciesQuery@allSpecies")
+	# Filters
+	# Name Filter
+	speciesByLatinName(slug:String @eq): Specy @find
+	# GBIF ID Filter
+	speciesByGbif(gbif_id:Int @eq): Specy @find
+	# Complex Filter
+	speciesComplexSpecs(
+		id: Int
+		latin_name: String
+		slug: String
+		author: String
+		botanical_references: String
+		common_english: String
+		record_checked: Int
+		gbif_id: Int
+		wiki_img: String
+		well_drained: Boolean
+		acid: Boolean
+		alkaline: Boolean
+		saline: Boolean
+		habit: String
+		deciduous_evergreen: String
+		height: Float
+		width: Float
+		hardyness: Int
+		in_cultivation: Boolean
+		nitrogen_fixer: Boolean
+		wind: String
+		growth_rate: String
+		pollution: String
+		poor_soil: Boolean
+		drought: Boolean
+		wildlife: Boolean
+		flower_type: String
+		self_fertile: String
+		has_cultivars: Boolean
+		cultivars_in_cultivation: Boolean
+		heavy_clay: Boolean
+		pull_out: Boolean
+		frost_tender: String
+		scented: Boolean
+		soil_pref: [String]
+		shade_pref: [String]
+		shade_locations: [String]
+		moisture_pref: [String]
+		ph_pref: [String]
+		garden_locations: [String]
+		garden_layers: [String]
+		pollinators: [String]
+		medicinal_uses: [String]
+		edible_uses: [String]
+		other_uses: [String]
+		regions_britain: [String]
+		regions_europe: [String]
+		regions_mediterranean: [String]
+		regions_w_asia: [String]
+		regions_e_asia: [String]
+		regions_n_america: [String]
+		regions_s_america: [String]
+		regions_africa: [String]
+		regions_australasia: [String]
+		regions_other: [String]
+	): [Specy] 
+		@paginate(defaultCount: 20, builder: "App\\GraphQL\\Queries\\SpeciesQuery@complexSpecs")
+}

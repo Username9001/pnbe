@@ -1,0 +1,20 @@
+type File {
+		id: ID!
+		filename: String!
+		plant: [Plant] @belongsTo
+}
+
+extend type Query {
+	filesByPlant(plant_id: Int): [File] @field(resolver: "FilesQuery@byPlant")
+	files: [File] @all
+}
+
+extend type Mutation {
+		upload(file: Upload!): String
+		
+		createFile(
+        filename: String!
+				plant_id: Int
+    ): File @create
+}
+
