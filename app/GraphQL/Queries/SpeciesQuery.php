@@ -22,6 +22,17 @@ class SpeciesQuery
         foreach ($args as $k => $v) {
             // if param is a number
             if (is_int($v) || is_bool($v) || is_float($v)) {
+                // Check for individual parameters
+                if($k == 'hardyness') {
+                    // grab related hardyness zones (+, - 1)
+                    array_push($query_array, 
+                        [$k, '=', $v],
+                    );
+                    // array_push($query_array,
+                    //     [$k, $v]
+                    // );
+                };
+                // If no individual parameters
                 array_push($query_array, [$k, $v]);
                 // $query->where([$k, $v]);
             }
@@ -32,6 +43,12 @@ class SpeciesQuery
             }
             // if param is an array
             elseif(is_array($v)) {
+                // Check for individual parameters
+                // Garden Layers
+                if($k == 'garden_layers') {
+                    array_push($query_array, [$k, 'all', $v]);
+                };
+                // If no individual parameters
                 array_push($query_array, [$k, 'all', $v]);
                 // $query->where($query_array, [$k, 'all', $v]);
             }
