@@ -15,12 +15,12 @@ type Book {
 	author: String
 }
 
-
 # FULL SPECY TYPE
 type Specy {
 	id: ID!
 	latin_name: String
 	slug: String
+	completion_status: Boolean
 	author: String
 	botanical_references: String
 	common_english: [String]
@@ -105,6 +105,8 @@ type Specy {
 extend type Query {
 	# All species
 	species: [Specy] @paginate(defaultCount: 36, builder: "App\\GraphQL\\Queries\\SpeciesQuery@allSpecies")
+	completedSpecies: [Specy] @paginate(defaultCount: 36, builder: "App\\GraphQL\\Queries\\SpeciesQuery@completedSpecies")
+	incompleteSpecies: [Specy] @paginate(defaultCount: 36, builder: "App\\GraphQL\\Queries\\SpeciesQuery@incompleteSpecies")
 	# Filters
 	# Name Filter
 	speciesByLatinName(slug:String @eq): Specy @find

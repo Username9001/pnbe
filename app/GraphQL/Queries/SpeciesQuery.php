@@ -77,7 +77,23 @@ class SpeciesQuery
     public function allSpecies($_, array $args)
     {
         $all_species = Specy::query()->orderBy('latin_name');
-
+        
         return $all_species;
+    }
+
+    public function completedSpecies($_, array $args)
+    {
+        // check species for completion
+        $completed_species = Specy::query()->where('completion_status', true)->orderBy('latin_name');
+        
+        return $completed_species;
+    }
+
+    public function incompleteSpecies($_, array $args)
+    {
+        // check species for completion
+        $incomplete_species = Specy::query()->where('completion_status', false)->orderBy('latin_name');
+        
+        return $incomplete_species;
     }
 }

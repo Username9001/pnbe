@@ -10,7 +10,7 @@ class GGBSpecy extends Model
 {
     // use HasFactory;
 	
-	public $table = 'ggb';
+	public $table = 'species_compact';
 
 	// protected $primaryKey = 'id';
 	

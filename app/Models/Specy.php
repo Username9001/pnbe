@@ -10,7 +10,7 @@ class Specy extends Model
 {
     // use HasFactory;
 	
-	public $table = 'species';
+	// public $table = 'species_compact';
 
 	protected $primaryKey = 'id';
 	

@@ -1,6 +1,6 @@
 type Plant {
-    id: ID!
-    name: String!
+	id: ID!
+	name: String!
 	description: String
 	location: String
 	planting_date: String
